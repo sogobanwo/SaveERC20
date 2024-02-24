@@ -1,12 +1,18 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  const lock = await ethers.deployContract("SaveERC20Token", [ethers.getSigner]);
+  const SogoToken = await ethers.deployContract("SogoToken", [100000])
+  SogoToken.waitForDeployment();
 
-  await lock.waitForDeployment();
+  const SaveERC20Token = await ethers.deployContract("SaveERC20", [SogoToken.target]);
+  await SaveERC20Token.waitForDeployment();
 
   console.log(
-    `SaveERC20Token is deployed to ${lock.target}`
+    `SogoToken is deployed to ${SogoToken.target}`
+  );
+
+  console.log(
+    `SaveERC20Token is deployed to ${SaveERC20Token.target}`
   );
 }
 
